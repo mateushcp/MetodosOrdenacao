@@ -24,7 +24,7 @@ int main(int argc, char const* argv[]) {
 	}
 	infos.close();
 
-    MetodosOrdenacao(obtemDigitado).QuickSort(dados);
+    MetodosOrdenacao(obtemDigitado).HeapSort(dados, obtemDigitado);
 
     for (int i = 0; i < obtemDigitado; i++)
     {

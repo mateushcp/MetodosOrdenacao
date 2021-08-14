@@ -22,11 +22,14 @@ void MetodosOrdenacao::Particao(Dados dados[], int Esq, int Dir, int *i, int *j)
     pivo = dados[(*i + *j) / 2];
 
     do
-    {
-        while ((&pivo)->Numero > dados[*i].Numero)
+    {        
+        while (taAntesZe(dados[*i].Nome, (pivo).Nome)){
             (*i)++;
-        while ((&pivo)->Numero < dados[*j].Numero)
+        }
+        while (taAntesZe((pivo).Nome, dados[*j].Nome)){
             (*j)--;
+        }
+
         if (*i <= *j)
         {
             w = dados[*i];
@@ -53,17 +56,28 @@ void MetodosOrdenacao::QuickSort(Dados dados[])
     Ordena(dados, 0, tamanhoPreenchido - 1);
 }
 
-// void comparaNome(Dados dados, Dados dados2){
-//     string dados1 = dados.Nome;
-//     string dados2zao = dados2.Nome;
+bool taAntesZe(string primeiraStr, string segundaStr)
+{
+    int aux;
 
-//     for (int i = 0; i < dados1.size(); i++)
-//     {
-//         //lily
-//         dados1[i] > dados2[i];
+    if (primeiraStr.size() < segundaStr.size())
+    {
+        aux = primeiraStr.size();
+    }
+    else
+    {
+        aux = segundaStr.size();
+    }
 
-//     }
-// }
+    for (int i = 0; i < aux; i++)
+    {
+        if (primeiraStr[i] != segundaStr[i])
+        {
+            return primeiraStr[i] < segundaStr[i];
+        }
+    } 
+    return (segundaStr.size() > primeiraStr.size());
+}
 
 void MetodosOrdenacao::Merge(Dados dados[], int e, int m, int d)
 {
@@ -87,7 +101,7 @@ void MetodosOrdenacao::Merge(Dados dados[], int e, int m, int d)
 
     while (i < numEsq && j < numDir)
     {
-        if (esquerda[i].Numero < direita[j].Numero)
+        if (taAntesZe(esquerda[i].Nome, direita[j].Nome))
         {
             dados[k] = esquerda[i];
             i++;
@@ -144,6 +158,7 @@ void MetodosOrdenacao::Heapify(Dados dados[], int n, int i)
         Heapify(dados, n, maior);
     }
 }
+
 void MetodosOrdenacao::HeapSort(Dados dados[], int n)
 {
     for (int i = n / 2 - 1; i >= 0; i--)
@@ -153,4 +168,37 @@ void MetodosOrdenacao::HeapSort(Dados dados[], int n)
         swap(dados[0], dados[i]);
         Heapify(dados, i, 0);
     }
+}
+
+int pegaMax(Dados dados[], int n) {
+  int max = dados[0].Numero;
+  for (int i = 1; i < n; i++)
+    if (dados[i].Numero > max)
+      max = dados[i].Numero;
+  return max;
+}
+
+void countingSort(Dados dados[], int tam, int place) {
+  const int max = 10;
+  int output[tam];
+  int count[max];
+
+  for (int i = 0; i < max; ++i)
+    count[i] = 0;
+  for (int i = 0; i < tam; i++)
+    count[(dados[i].Numero / place) % 10]++;
+  for (int i = 1; i < max; i++)
+    count[i] += count[i - 1];
+  for (int i = tam - 1; i >= 0; i--) {
+    output[count[(dados[i].Numero / place) % 10] - 1] = dados[i].Numero;
+    count[(dados[i].Numero / place) % 10]--;
+  }
+  for (int i = 0; i < tam; i++)
+    dados[i].Numero = output[i];
+}
+
+void MetodosOrdenacao::RadixSort(Dados dados[], int tam) {
+  int max = pegaMax(dados, tam);
+  for (int place = 1; max / place > 0; place *= 10)
+    countingSort(dados, tam, place);
 }

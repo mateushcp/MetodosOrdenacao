@@ -17,10 +17,13 @@ class MetodosOrdenacao {
         void Merge(Dados dados[], int e, int m, int d);
         void Heapify(Dados dados[], int n, int i);
         void HeapSort(Dados dados[], int n);
+        void RadixSort(Dados dados[], int tam);
 
     private:
         int tamanhoPreenchido;
         int MAXTAM;
 };
+
+bool taAntesZe(string primeiraStr, string segundaStr);
 
 #endif

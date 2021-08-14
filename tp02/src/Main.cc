@@ -3,6 +3,8 @@
 #include <string>
 #include "Dados.h"
 #include "MetodosOrdenacao.h"
+#include "Combinacoes.h"
+#include "time.h"
 
 using namespace std;
 
@@ -12,6 +14,7 @@ int main(int argc, char const* argv[]) {
     int obtemDigitado = stoi(argv[3]);
 
     Dados *dados = new Dados[obtemDigitado];
+	Combinacoes combinacoes;
 
 	string dadosDetail;
 	string delimiter = " ";
@@ -24,13 +27,7 @@ int main(int argc, char const* argv[]) {
 	}
 	infos.close();
 
-    MetodosOrdenacao(obtemDigitado).HeapSort(dados, obtemDigitado);
-
-    for (int i = 0; i < obtemDigitado; i++)
-    {
-        cout << dados[i].Numero << endl;
-    }
-    
+	combinacoes.GetCombo(dados, obtemCombo, obtemDigitado);
 
 	delete[] dados;
 	return 0;

@@ -12,7 +12,7 @@ MetodosOrdenacao::MetodosOrdenacao(int n)
 MetodosOrdenacao::~MetodosOrdenacao()
 {
 }
-
+//funcao paripcao, utilizada para percorrer o vetor com o pivo, dividi-lo e organizar
 void MetodosOrdenacao::Particao(Dados dados[], int Esq, int Dir, int *i, int *j)
 {
     Dados pivo, w;
@@ -22,11 +22,13 @@ void MetodosOrdenacao::Particao(Dados dados[], int Esq, int Dir, int *i, int *j)
     pivo = dados[(*i + *j) / 2];
 
     do
-    {        
-        while (taAntesZe(dados[*i].Nome, (pivo).Nome)){
+    {
+        while (taAntesZe(dados[*i].Nome, (pivo).Nome))
+        {
             (*i)++;
         }
-        while (taAntesZe((pivo).Nome, dados[*j].Nome)){
+        while (taAntesZe((pivo).Nome, dados[*j].Nome))
+        {
             (*j)--;
         }
 
@@ -40,7 +42,7 @@ void MetodosOrdenacao::Particao(Dados dados[], int Esq, int Dir, int *i, int *j)
         }
     } while (*i <= *j);
 }
-
+//funçao que ordena as partes esquerda e direita obtidas a partir da particao obtida
 void MetodosOrdenacao::Ordena(Dados dados[], int Esq, int Dir)
 {
     int i, j;
@@ -50,12 +52,12 @@ void MetodosOrdenacao::Ordena(Dados dados[], int Esq, int Dir)
     if (i < Dir)
         Ordena(dados, i, Dir);
 }
-
+//funcao principal que chama a ordena, com o tamanho inicial 0, e o tamanho do vetor -1
 void MetodosOrdenacao::QuickSort(Dados dados[])
 {
     Ordena(dados, 0, tamanhoPreenchido - 1);
 }
-
+//funcao feita para obter a menor string, com o intuito de comparar os .nomes, usando o return true ou false dessa funcao
 bool taAntesZe(string primeiraStr, string segundaStr)
 {
     int aux;
@@ -75,10 +77,10 @@ bool taAntesZe(string primeiraStr, string segundaStr)
         {
             return primeiraStr[i] < segundaStr[i];
         }
-    } 
+    }
     return (segundaStr.size() > primeiraStr.size());
 }
-
+//funcao que faz as iteracoes relacionadas ao merge, usando dois subarrays, numEsq e numDir aqui nos comparamos o meio, a esquerda e a direita do vetor para sortealo
 void MetodosOrdenacao::Merge(Dados dados[], int e, int m, int d)
 {
 
@@ -131,7 +133,7 @@ void MetodosOrdenacao::Merge(Dados dados[], int e, int m, int d)
     delete esquerda;
     delete direita;
 }
-
+//funcao principal do mergesort, aqui chamamos a mesma, de forma recursiva para organizar os nomes
 void MetodosOrdenacao::MergeSort(Dados dados[], int esq, int dir)
 {
     if (esq < dir)
@@ -142,12 +144,13 @@ void MetodosOrdenacao::MergeSort(Dados dados[], int esq, int dir)
         Merge(dados, esq, m, dir);
     }
 }
-
+//funcao heapfy, que ira comparar os numeros e dar um swap nos dados obtidos, tambem uma funcao recursiva
 void MetodosOrdenacao::Heapify(Dados dados[], int n, int i)
 {
     int maior = i;
     int l = 2 * i + 1;
     int r = 2 * i + 2;
+
     if (l < n && dados[l].Numero > dados[maior].Numero)
         maior = l;
     if (r < n && dados[r].Numero > dados[maior].Numero)
@@ -158,7 +161,7 @@ void MetodosOrdenacao::Heapify(Dados dados[], int n, int i)
         Heapify(dados, n, maior);
     }
 }
-
+// funcao principal que chama o heapsort, utilizando o heapfy
 void MetodosOrdenacao::HeapSort(Dados dados[], int n)
 {
     for (int i = n / 2 - 1; i >= 0; i--)
@@ -169,36 +172,40 @@ void MetodosOrdenacao::HeapSort(Dados dados[], int n)
         Heapify(dados, i, 0);
     }
 }
-
-int pegaMax(Dados dados[], int n) {
-  int max = dados[0].Numero;
-  for (int i = 1; i < n; i++)
-    if (dados[i].Numero > max)
-      max = dados[i].Numero;
-  return max;
+//funcao que retorna o maior tamanho do vetor
+int pegaMax(Dados dados[], int n)
+{
+    int max = dados[0].Numero;
+    for (int i = 1; i < n; i++)
+        if (dados[i].Numero > max)
+            max = dados[i].Numero;
+    return max;
 }
+//funcao que faz um counting sort de um array, de acordo com o place, passado como parametro
+void countingSort(Dados dados[], int tam, int place)
+{
+    const int max = 10;
+    int output[tam];
+    int count[max];
 
-void countingSort(Dados dados[], int tam, int place) {
-  const int max = 10;
-  int output[tam];
-  int count[max];
-
-  for (int i = 0; i < max; ++i)
-    count[i] = 0;
-  for (int i = 0; i < tam; i++)
-    count[(dados[i].Numero / place) % 10]++;
-  for (int i = 1; i < max; i++)
-    count[i] += count[i - 1];
-  for (int i = tam - 1; i >= 0; i--) {
-    output[count[(dados[i].Numero / place) % 10] - 1] = dados[i].Numero;
-    count[(dados[i].Numero / place) % 10]--;
-  }
-  for (int i = 0; i < tam; i++)
-    dados[i].Numero = output[i];
+    for (int i = 0; i < max; ++i)
+        count[i] = 0;
+    for (int i = 0; i < tam; i++)
+        count[(dados[i].Numero / place) % 10]++;
+    for (int i = 1; i < max; i++)
+        count[i] += count[i - 1];
+    for (int i = tam - 1; i >= 0; i--)
+    {
+        output[count[(dados[i].Numero / place) % 10] - 1] = dados[i].Numero;
+        count[(dados[i].Numero / place) % 10]--;
+    }
+    for (int i = 0; i < tam; i++)
+        dados[i].Numero = output[i];
 }
-
-void MetodosOrdenacao::RadixSort(Dados dados[], int tam) {
-  int max = pegaMax(dados, tam);
-  for (int place = 1; max / place > 0; place *= 10)
-    countingSort(dados, tam, place);
+//funcao principal que chama o radix sort, primeiro pegamos o maior numero de digitos, e fazemos o counting sort para cada um
+void MetodosOrdenacao::RadixSort(Dados dados[], int tam)
+{
+    int max = pegaMax(dados, tam);
+    for (int place = 1; max / place > 0; place *= 10)
+        countingSort(dados, tam, place);
 }

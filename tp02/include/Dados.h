@@ -9,8 +9,7 @@ using namespace std;
 struct Dados
 {
     string Nome;
-	int Numero;
+    int Numero;
 };
-
 
 #endif

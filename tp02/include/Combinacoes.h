@@ -5,11 +5,9 @@
 #include <string>
 #include "Dados.h"
 
-
 struct Combinacoes
 {
-    void GetCombo(Dados dados[],int obtemCombo, int obtemDigitado);
+    void GetCombo(Dados dados[], int obtemCombo, int obtemDigitado);
 };
-
 
 #endif
